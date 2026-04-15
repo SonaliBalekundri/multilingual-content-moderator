@@ -1,0 +1,28 @@
+# docker-compose.yml — Run with: docker-compose up --build
+version: "3.8"
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DEVICE=cpu
+      - LOG_LEVEL=info
+    volumes:
+      - model_cache:/root/.cache/huggingface  # Cache models between restarts
+    restart: unless-stopped
+
+  streamlit:
+    build: .
+    ports:
+      - "8501:8501"
+    command: streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+    depends_on:
+      - api
+    environment:
+      - API_URL=http://api:8000
+    restart: unless-stopped
+
+volumes:
+  model_cache:

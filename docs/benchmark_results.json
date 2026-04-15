@@ -1,0 +1,356 @@
+{
+  "model": "citizenlab/distilbert-base-multilingual-cased-toxicity",
+  "threshold": 0.5,
+  "per_language": {
+    "en": {
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667,
+      "tp": 5,
+      "fp": 5,
+      "fn": 0,
+      "tn": 0,
+      "avg_latency_ms": 93.84,
+      "total": 10
+    },
+    "hi": {
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667,
+      "tp": 5,
+      "fp": 5,
+      "fn": 0,
+      "tn": 0,
+      "avg_latency_ms": 27.24,
+      "total": 10
+    },
+    "ar": {
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667,
+      "tp": 5,
+      "fp": 5,
+      "fn": 0,
+      "tn": 0,
+      "avg_latency_ms": 30.48,
+      "total": 10
+    }
+  },
+  "overall": {
+    "accuracy": 0.5,
+    "precision": 0.5,
+    "recall": 1.0,
+    "f1": 0.6667,
+    "tp": 15,
+    "fp": 15,
+    "fn": 0,
+    "tn": 0,
+    "avg_latency_ms": 50.52,
+    "total": 30
+  },
+  "detailed_results": [
+    {
+      "text": "You are an absolute idiot and waste of space",
+      "lang": "en",
+      "expected": 1,
+      "category": "insult",
+      "predicted": 1,
+      "max_score": 0.9393,
+      "correct": true,
+      "latency_ms": 663.55
+    },
+    {
+      "text": "I will make sure you regret being alive",
+      "lang": "en",
+      "expected": 1,
+      "category": "threat",
+      "predicted": 1,
+      "max_score": 0.9483,
+      "correct": true,
+      "latency_ms": 26.93
+    },
+    {
+      "text": "People like you should be eliminated",
+      "lang": "en",
+      "expected": 1,
+      "category": "hate_speech",
+      "predicted": 1,
+      "max_score": 0.9566,
+      "correct": true,
+      "latency_ms": 26.55
+    },
+    {
+      "text": "What a disgusting thing to say, you pig",
+      "lang": "en",
+      "expected": 1,
+      "category": "obscene",
+      "predicted": 1,
+      "max_score": 0.8788,
+      "correct": true,
+      "latency_ms": 42.39
+    },
+    {
+      "text": "Nobody loves you and nobody ever will",
+      "lang": "en",
+      "expected": 1,
+      "category": "toxic",
+      "predicted": 1,
+      "max_score": 0.8008,
+      "correct": true,
+      "latency_ms": 33.19
+    },
+    {
+      "text": "Thank you for your thoughtful response",
+      "lang": "en",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.9553,
+      "correct": false,
+      "latency_ms": 34.11
+    },
+    {
+      "text": "I respectfully disagree with your point",
+      "lang": "en",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.9598,
+      "correct": false,
+      "latency_ms": 31.23
+    },
+    {
+      "text": "Great presentation today, well done!",
+      "lang": "en",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.9583,
+      "correct": false,
+      "latency_ms": 20.63
+    },
+    {
+      "text": "Could you please clarify your last point?",
+      "lang": "en",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.9598,
+      "correct": false,
+      "latency_ms": 33.87
+    },
+    {
+      "text": "The weather has been lovely this week",
+      "lang": "en",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.9589,
+      "correct": false,
+      "latency_ms": 25.94
+    },
+    {
+      "text": "तुम एक बेवकूफ और बेकार इंसान हो",
+      "lang": "hi",
+      "expected": 1,
+      "category": "insult",
+      "predicted": 1,
+      "max_score": 0.5601,
+      "correct": true,
+      "latency_ms": 38.22
+    },
+    {
+      "text": "मैं तुम्हें सबक सिखाऊंगा",
+      "lang": "hi",
+      "expected": 1,
+      "category": "threat",
+      "predicted": 1,
+      "max_score": 0.5892,
+      "correct": true,
+      "latency_ms": 29.19
+    },
+    {
+      "text": "तुम्हारे जैसे लोग समाज के लिए बोझ हैं",
+      "lang": "hi",
+      "expected": 1,
+      "category": "hate_speech",
+      "predicted": 1,
+      "max_score": 0.8762,
+      "correct": true,
+      "latency_ms": 36.08
+    },
+    {
+      "text": "चुप रहो, तुम्हारी कोई औकात नहीं",
+      "lang": "hi",
+      "expected": 1,
+      "category": "toxic",
+      "predicted": 1,
+      "max_score": 0.5538,
+      "correct": true,
+      "latency_ms": 21.72
+    },
+    {
+      "text": "तुम घटिया इंसान हो",
+      "lang": "hi",
+      "expected": 1,
+      "category": "insult",
+      "predicted": 1,
+      "max_score": 0.7328,
+      "correct": true,
+      "latency_ms": 22.4
+    },
+    {
+      "text": "आपका काम बहुत अच्छा है",
+      "lang": "hi",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.9114,
+      "correct": false,
+      "latency_ms": 19.8
+    },
+    {
+      "text": "कृपया मुझे और जानकारी दें",
+      "lang": "hi",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.7268,
+      "correct": false,
+      "latency_ms": 24.77
+    },
+    {
+      "text": "आज का मौसम बहुत सुहावना है",
+      "lang": "hi",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.8689,
+      "correct": false,
+      "latency_ms": 29.85
+    },
+    {
+      "text": "धन्यवाद आपकी मदद के लिए",
+      "lang": "hi",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.9319,
+      "correct": false,
+      "latency_ms": 25.27
+    },
+    {
+      "text": "मुझे आपसे बात करके खुशी हुई",
+      "lang": "hi",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.5975,
+      "correct": false,
+      "latency_ms": 25.15
+    },
+    {
+      "text": "أنت غبي ولا تستحق الاحترام",
+      "lang": "ar",
+      "expected": 1,
+      "category": "insult",
+      "predicted": 1,
+      "max_score": 0.6523,
+      "correct": true,
+      "latency_ms": 27.59
+    },
+    {
+      "text": "سأجعلك تندم على هذا",
+      "lang": "ar",
+      "expected": 1,
+      "category": "threat",
+      "predicted": 1,
+      "max_score": 0.8928,
+      "correct": true,
+      "latency_ms": 25.27
+    },
+    {
+      "text": "أنت عار على عائلتك",
+      "lang": "ar",
+      "expected": 1,
+      "category": "toxic",
+      "predicted": 1,
+      "max_score": 0.8338,
+      "correct": true,
+      "latency_ms": 22.58
+    },
+    {
+      "text": "اخرس لا أحد يريدك هنا",
+      "lang": "ar",
+      "expected": 1,
+      "category": "hate_speech",
+      "predicted": 1,
+      "max_score": 0.712,
+      "correct": true,
+      "latency_ms": 34.65
+    },
+    {
+      "text": "أنت أسوأ شخص عرفته",
+      "lang": "ar",
+      "expected": 1,
+      "category": "insult",
+      "predicted": 1,
+      "max_score": 0.7154,
+      "correct": true,
+      "latency_ms": 34.48
+    },
+    {
+      "text": "شكراً لك على مساعدتك",
+      "lang": "ar",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.882,
+      "correct": false,
+      "latency_ms": 25.37
+    },
+    {
+      "text": "أتمنى لك يوماً سعيداً",
+      "lang": "ar",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.859,
+      "correct": false,
+      "latency_ms": 21.88
+    },
+    {
+      "text": "العمل الجماعي يؤدي إلى النجاح",
+      "lang": "ar",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.9074,
+      "correct": false,
+      "latency_ms": 27.93
+    },
+    {
+      "text": "هل يمكنك شرح ذلك بالتفصيل؟",
+      "lang": "ar",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.9383,
+      "correct": false,
+      "latency_ms": 33.37
+    },
+    {
+      "text": "الطقس جميل اليوم",
+      "lang": "ar",
+      "expected": 0,
+      "category": "clean",
+      "predicted": 1,
+      "max_score": 0.7927,
+      "correct": false,
+      "latency_ms": 51.64
+    }
+  ]
+}
