@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 class ModerationRequest(BaseModel):
     """Request body for single text moderation."""
     text: str = Field(..., min_length=1, max_length=5000, description="Text to moderate")
-    threshold: Optional[float] = Field(0.5, ge=0.0, le=1.0, description="Global threshold for all categories")
+    threshold: Optional[float] = Field(None, ge=0.0, le=1.0, description="Override threshold (uses language-aware defaults if not set)")
     thresholds: Optional[Dict[str, float]] = Field(None, description="Per-category thresholds (overrides global)")
 
     model_config = {

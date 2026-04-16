@@ -41,14 +41,29 @@ async def moderate_text(request: ModerationRequest):
     Detects the language, runs the toxicity model, and returns
     per-category scores with a verdict.
     """
-    # TODO: Week 2 - Implement this endpoint
-    # Steps:
-    # 1. Detect language using detect_language()
-    # 2. Build thresholds dict from request
-    # 3. Call moderator.moderate(text, thresholds)
-    # 4. Combine language + moderation result into ModerationResult
-    raise HTTPException(status_code=501, detail="Coming in Week 2!")
+    try:
+        mod = get_moderator()
 
+        # Call the model — handles language detection, tokenization,
+        # inference, and threshold application internally
+        result = mod.moderate(
+            text=request.text,
+            threshold=request.threshold,
+        )
+
+        # Build the response — add the original text (moderate() doesn't return it)
+        return ModerationResult(
+            text=request.text,
+            language=result["language"],
+            verdict=result["verdict"],
+            categories=result["categories"],   # Pydantic auto-converts dicts → CategoryResult
+            confidence=result["confidence"],
+            processing_time_ms=result["processing_time_ms"],
+        )
+
+    except Exception as e:
+        logger.error(f"Moderation failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Moderation failed: {str(e)}")
 
 @router.post("/moderate/batch", response_model=BatchModerationResult)
 async def moderate_batch(request: BatchModerationRequest):

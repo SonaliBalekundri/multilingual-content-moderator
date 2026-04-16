@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     # Supported languages
     supported_languages: list = ["en", "hi", "ar", "es"]
 
+    # Model output categories (CitizenLab model has 2 labels)
+    categories: list = ["toxic", "non-toxic"]
+
     # Language aliases — languages that share scripts or are commonly
     # confused by langdetect, mapped to a supported language's threshold.
     # Discovered through testing: langdetect confuses Catalan/Spanish,
