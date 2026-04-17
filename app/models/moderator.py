@@ -129,10 +129,15 @@ class ContentModerator:
         for idx, (label_id, label_name) in enumerate(self.model.config.id2label.items()):
             score = float(probs[idx]) if probs.ndim > 0 else float(probs)
             normalised_name = label_name.lower().replace(" ", "_")
-            flagged = score >= threshold
 
-            if flagged and normalised_name == "toxic":
-                any_flagged = True
+            # Only apply threshold to the "toxic" category
+            # "not_toxic" flagged status is just the inverse
+            if normalised_name == "toxic":
+                flagged = score >= threshold
+                if flagged:
+                    any_flagged = True
+            else:
+                flagged = score >= 0.5  # not_toxic uses standard 0.5
 
             max_score = max(max_score, score)
 

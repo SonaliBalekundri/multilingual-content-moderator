@@ -50,10 +50,12 @@ class ModerationResult(BaseModel):
     """Response for a single text moderation."""
     text: str
     language: str = Field(..., description="Detected language code (en, hi, ar)")
-    verdict: str = Field(..., description="'toxic' or 'clean'")
+    verdict: str = Field(..., description="'toxic', 'clean', or 'needs_review'")
     categories: Dict[str, CategoryResult]
     confidence: float
     processing_time_ms: float
+    threshold_used: Optional[float] = Field(None, description="Threshold applied for this language")
+    warnings: List[str] = Field(default_factory=list, description="Any warnings about the classification")
 
 
 class BatchModerationResult(BaseModel):

@@ -6,6 +6,7 @@ You'll implement these in Week 2.
 from fastapi import APIRouter, HTTPException
 from loguru import logger
 import time
+import re
 
 from app.schemas.moderation import (
     ModerationRequest,
@@ -34,6 +35,36 @@ def get_moderator():
     return moderator
 
 
+def sanitise_text(text: str) -> dict:
+    """
+    Clean and validate input text before sending to the model.
+    Returns dict with cleaned text and any warnings.
+
+    Guardrails from Week 1 testing:
+    - Very short text (<3 words) → model unreliably flags "hi", "ok" as toxic
+    - Whitespace-only → reject
+    - Repeated characters → normalise ("stuuuuupid" → "stuupid")
+    """
+    warnings = []
+
+    # Strip leading/trailing whitespace
+    cleaned = text.strip()
+
+    # Check for empty or whitespace-only text
+    if not cleaned:
+        return {"text": cleaned, "skip": True, "reason": "empty_text", "warnings": warnings}
+
+    # Check minimum word count
+    word_count = len(cleaned.split())
+    if word_count < 3:
+        warnings.append(f"Short text ({word_count} words) — classification may be unreliable")
+
+    # Normalise repeated characters: "stuuuuupid" → "stuupid"
+    cleaned = re.sub(r'(.)\1{2,}', r'\1\1', cleaned)
+
+    return {"text": cleaned, "skip": False, "reason": None, "warnings": warnings}
+
+
 @router.post("/moderate", response_model=ModerationResult)
 async def moderate_text(request: ModerationRequest):
     """
@@ -43,23 +74,38 @@ async def moderate_text(request: ModerationRequest):
     per-category scores with a verdict.
     """
     try:
-        mod = get_moderator()
+        # Step 1: Sanitise input
+        sanitised = sanitise_text(request.text)
 
-        # Call the model — handles language detection, tokenization,
-        # inference, and threshold application internally
+        # Handle empty text
+        if sanitised["skip"]:
+            return ModerationResult(
+                text=request.text,
+                language="unknown",
+                verdict="clean",
+                categories={},
+                confidence=0.0,
+                processing_time_ms=0.0,
+                threshold_used=None,
+                warnings=["Text is empty or whitespace-only — skipped classification"],
+            )
+
+        # Step 2: Run moderation on cleaned text
+        mod = get_moderator()
         result = mod.moderate(
-            text=request.text,
+            text=sanitised["text"],
             threshold=request.threshold,
         )
 
-        # Build the response — add the original text (moderate() doesn't return it)
         return ModerationResult(
-            text=request.text,
+            text=request.text,              # Return ORIGINAL text, not cleaned
             language=result["language"],
             verdict=result["verdict"],
-            categories=result["categories"],   # Pydantic auto-converts dicts → CategoryResult
+            categories=result["categories"],
             confidence=result["confidence"],
             processing_time_ms=result["processing_time_ms"],
+            threshold_used=result["threshold_used"],
+            warnings=sanitised["warnings"],
         )
 
     except Exception as e:
@@ -80,9 +126,25 @@ async def moderate_batch(request: BatchModerationRequest):
 
         results = []
         for text in request.texts:
+            # Sanitise each text
+            sanitised = sanitise_text(text)
+
+            if sanitised["skip"]:
+                results.append(ModerationResult(
+                    text=text,
+                    language="unknown",
+                    verdict="clean",
+                    categories={},
+                    confidence=0.0,
+                    processing_time_ms=0.0,
+                    threshold_used=None,
+                    warnings=["Text is empty or whitespace-only — skipped classification"],
+                ))
+                continue
+
             result = mod.moderate(
-                text=text,
-                threshold=request.threshold,  # None → language-aware thresholds
+                text=sanitised["text"],
+                threshold=request.threshold,
             )
 
             results.append(ModerationResult(
@@ -92,6 +154,8 @@ async def moderate_batch(request: BatchModerationRequest):
                 categories=result["categories"],
                 confidence=result["confidence"],
                 processing_time_ms=result["processing_time_ms"],
+                threshold_used=result["threshold_used"],
+                warnings=sanitised["warnings"],
             ))
 
         total_ms = (time.time() - start) * 1000
