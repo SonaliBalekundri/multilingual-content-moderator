@@ -5,6 +5,7 @@ You'll implement these in Week 2.
 
 from fastapi import APIRouter, HTTPException
 from loguru import logger
+import time
 
 from app.schemas.moderation import (
     ModerationRequest,
@@ -73,9 +74,40 @@ async def moderate_batch(request: BatchModerationRequest):
     Processes up to 100 texts and returns individual results
     plus aggregate statistics.
     """
-    # TODO: Week 2 - Implement batch endpoint
-    raise HTTPException(status_code=501, detail="Coming in Week 2!")
+    try:
+        mod = get_moderator()
+        start = time.time()
 
+        results = []
+        for text in request.texts:
+            result = mod.moderate(
+                text=text,
+                threshold=request.threshold,  # None → language-aware thresholds
+            )
+
+            results.append(ModerationResult(
+                text=text,
+                language=result["language"],
+                verdict=result["verdict"],
+                categories=result["categories"],
+                confidence=result["confidence"],
+                processing_time_ms=result["processing_time_ms"],
+            ))
+
+        total_ms = (time.time() - start) * 1000
+        flagged = sum(1 for r in results if r.verdict == "toxic")
+
+        return BatchModerationResult(
+            results=results,
+            total_texts=len(results),
+            flagged_count=flagged,
+            clean_count=len(results) - flagged,
+            total_processing_time_ms=round(total_ms, 2),
+        )
+
+    except Exception as e:
+        logger.error(f"Batch moderation failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Batch moderation failed: {str(e)}")
 
 @router.get("/languages", response_model=LanguagesResponse)
 async def list_languages():

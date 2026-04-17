@@ -32,7 +32,7 @@ class ModerationRequest(BaseModel):
 class BatchModerationRequest(BaseModel):
     """Request body for batch text moderation."""
     texts: List[str] = Field(..., min_length=1, max_length=100, description="List of texts to moderate")
-    threshold: Optional[float] = Field(0.5, ge=0.0, le=1.0, description="Global threshold")
+    threshold: Optional[float] = Field(None, ge=0.0, le=1.0, description="Override threshold (uses language-aware defaults if not set)")
     thresholds: Optional[Dict[str, float]] = Field(None, description="Per-category thresholds")
 
 
