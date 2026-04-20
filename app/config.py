@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     # These thresholds were calibrated through benchmark testing.
     threshold_en: float = 0.5
     threshold_hi: float = 0.15
-    threshold_ar: float = 0.10
+    threshold_ar: float = 0.20
     threshold_es: float = 0.5
     threshold_default: float = 0.5
 
