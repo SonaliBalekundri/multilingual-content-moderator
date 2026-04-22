@@ -1,18 +1,17 @@
 # ============================================
 # Multilingual Content Moderator - Dockerfile
-# You'll use this in Week 3
+# Multi-stage build to keep the image lean
 # ============================================
 
-# Multi-stage build to keep the image lean
-# Stage 1: Build dependencies
-FROM python:3.10-slim as builder
+# Stage 1: Install dependencies
+FROM python:3.12-slim AS builder
 
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Stage 2: Runtime
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -26,9 +25,9 @@ COPY . .
 # Expose port
 EXPOSE 8000
 
-# Health check
+# Health check using Python instead of curl (curl not in slim image)
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-    CMD curl -f http://localhost:8000/api/v1/health || exit 1
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')" || exit 1
 
 # Run the API
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

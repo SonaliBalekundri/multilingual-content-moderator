@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.env
+*.egg-info/
+notebooks/
+docs/
+tests/
+.pytest_cache/
+*.png
+*.pdf
+*.docx
