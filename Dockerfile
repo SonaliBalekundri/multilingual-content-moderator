@@ -8,6 +8,11 @@ FROM python:3.12-slim AS builder
 
 WORKDIR /app
 COPY requirements.txt .
+
+# Install CPU-only PyTorch first (skips 2.5GB of CUDA libraries)
+RUN pip install --no-cache-dir --user torch --index-url https://download.pytorch.org/whl/cpu
+
+# Install remaining dependencies
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Stage 2: Runtime
