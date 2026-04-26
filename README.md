@@ -11,7 +11,7 @@ A FastAPI-powered content moderation service that detects toxicity and harmful c
 
 ## Demo
 
-https://github.com/SonaliBalekundri/multilingual-content-moderator/raw/main/docs/demo.mp4
+https://github.com/SonaliBalekundri/multilingual-content-moderator/raw/main/docs/Multilingual_Content_Moderator_Demo.mp4
 
 ## Features
 
